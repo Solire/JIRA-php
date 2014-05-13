@@ -13,7 +13,7 @@ class Jira
         $this->request->username = (isset($config['username'])) ? $config['username'] : null;
         $this->request->password = (isset($config['password'])) ? $config['password'] : null;
         $host = (isset($config['host'])) ? $config['host'] : null; 
-        $this->host = 'https://' . $host . '/rest/api/2/';
+        $this->host = $host . '/rest/api/2/';
     }
 
     public function testLogin()

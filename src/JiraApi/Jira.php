@@ -176,5 +176,20 @@ class Jira
 
         return $this->request->lastRequestStatus();
     }
+    
+    /**
+     * Permet la création d'un composant dans un projet
+     * 
+     * @param array $component Information du composant à fournir à l'API
+     * 
+     * @return bool Renvoi false en cas d'erreur
+     */
+    public function createComponent($component)
+    {
+        $this->request->openConnect($this->host . 'component/', 'POST', $component);
+        $this->request->execute();
+
+        return $this->request->lastRequestStatus();
+    }
 }
 ?>

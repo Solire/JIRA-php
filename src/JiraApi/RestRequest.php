@@ -43,7 +43,7 @@ class RestRequest
 
     public function execute()
     {
-        $ch = curl_init();
+        $ch = \curl_init();
         $this->setAuth($ch);
 
         try {
@@ -64,10 +64,10 @@ class RestRequest
                     throw new \InvalidArgumentException('Current verb (' . $this->verb . ') is an invalid REST verb.');
             }
         } catch (\InvalidArgumentException $e) {
-            curl_close($ch);
+            \curl_close($ch);
             throw $e;
         } catch (\Exception $e) {
-            curl_close($ch);
+            \curl_close($ch);
             throw $e;
         }
     }
@@ -124,24 +124,24 @@ class RestRequest
 
     protected function executePost($ch)
     {
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $this->requestBody);
+        \curl_setopt($ch, CURLOPT_POST, true);
+        \curl_setopt($ch, CURLOPT_POSTFIELDS, $this->requestBody);
 
         $this->doExecute($ch);
     }
 
     protected function executePut($ch)
     {
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $this->requestBody);
+        \curl_setopt($ch, CURLOPT_POST, true);
+        \curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+        \curl_setopt($ch, CURLOPT_POSTFIELDS, $this->requestBody);
 
         $this->doExecute($ch);
     }
 
     protected function executeDelete($ch)
     {
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+        \curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
 
         $this->doExecute($ch);
     }
@@ -149,18 +149,18 @@ class RestRequest
     protected function doExecute(&$ch)
     {
         $this->setCurlOpts($ch);
-        $this->responseBody = curl_exec($ch);
-        $this->responseInfo = curl_getinfo($ch);
-        curl_close($ch);
+        $this->responseBody = \curl_exec($ch);
+        $this->responseInfo = \curl_getinfo($ch);
+        \curl_close($ch);
     }
 
     protected function setCurlOpts(&$ch)
     {
-        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
-        curl_setopt($ch, CURLOPT_URL, $this->url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        //curl_setopt($ch, CURLOPT_HEADER, true); //displays header in output.
-        curl_setopt(
+        \curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+        \curl_setopt($ch, CURLOPT_URL, $this->url);
+        \curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        //\curl_setopt($ch, CURLOPT_HEADER, true); //displays header in output.
+        \curl_setopt(
             $ch,
             CURLOPT_HTTPHEADER,
             array(
@@ -168,14 +168,14 @@ class RestRequest
                 $this->contentType, 'X-Atlassian-Token: nocheck'
             )
         );
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // ignore self signed certs
-        //curl_setopt($ch, CURLOPT_VERBOSE, true); // set to true for CURL debug output
+        \curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // ignore self signed certs
+        //\curl_setopt($ch, CURLOPT_VERBOSE, true); // set to true for CURL debug output
     }
 
     protected function setAuth(&$ch)
     {
         if ($this->username !== null && $this->password !== null) {
-            curl_setopt($ch, CURLOPT_USERPWD, $this->username . ':' . $this->password);
+            \curl_setopt($ch, CURLOPT_USERPWD, $this->username . ':' . $this->password);
         }
     }
 }
